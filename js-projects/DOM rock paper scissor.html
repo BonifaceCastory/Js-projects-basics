@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>objects</title>
+</head>
+<body>
+    <p>rock paper scissors</p>
+
+    <button onclick="
+    playerGame('rock');
+    ">rock</button>
+
+    <button onclick="
+    playerGame('paper');
+    " >paper</button>
+
+    <button onclick="
+      playerGame('scissor');
+
+" >scissor</button>
+<p class="p-result"></p>
+
+<p class="p-moves"></p>
+
+<p class="js-score"></p>
+
+
+<button onclick="
+  scores.wins = 0,
+  scores.looses = 0,
+  scores.ties = 0;
+
+  localStorage.removeItem('scores');
+
+  updateScore();
+
+" > score reset</button>
+
+    
+
+    <script>
+        let scores = JSON.parse(localStorage.getItem('scores')) || {
+            wins: 0,
+            looses: 0,
+            ties: 0
+        }; //default operator.
+
+        updateScore(); // update the score to the paragraph when the page loads
+        // scores is set to the value of localStorage.getItem('scores') if it exists, otherwise it defaults to an object with wins, looses, and ties all set to 0. 
+
+      /*  // shortcut (!scores)
+        if(scores === null){
+            scores = {
+            wins: 0,
+            looses: 0,
+            ties: 0
+        };
+        }//these code works the same as the above
+       */
+
+        function playerGame(playerMove){ 
+            
+              const computerMove =  pickComputerMove(); // due to return the function is stored in a global variable under the help of scope
+
+        // compare the move when the rock button is clicked with other moves
+            let result = '';
+
+            if (playerMove === 'scissor'){
+
+            
+            if(computerMove === 'rock') {
+                result = 'you lose';
+            }else if(computerMove === 'paper'){
+                result = 'you win';
+            }else if(computerMove === 'scissor'){
+                result = 'tie';
+            }
+
+            }else if (playerMove === 'paper'){
+                // compare the move when the rock button is clicked with other moves
+            if(computerMove === 'rock') {
+                result = 'you win';
+            }else if(computerMove === 'paper'){
+                result = 'tie';
+            }else if(computerMove === 'scissor'){
+                result = 'you lose';
+            }
+
+            }else if (playerMove === 'rock'){
+            if(computerMove === 'rock') {
+                result = 'tie';
+            }else if(computerMove === 'paper'){
+                result = 'you lose';
+            }else if(computerMove === 'scissor'){
+                result = 'you win';
+            }
+            }
+            if(result === 'you win'){
+                scores.wins += 1;
+            }else if(result === 'you lose'){
+                scores.looses += 1;
+            }else if (result === 'tie'){
+                scores.ties += 1;
+            }
+
+            localStorage.setItem('scores', JSON.stringify(scores));
+
+            updateScore(); // update the score to the paragraph after each game 
+
+            document.querySelector('.p-result').innerHTML = result;
+
+            document.querySelector('.p-moves').innerHTML = ` you pick ${playerMove} - computer pick ${computerMove}`;
+
+            
+    
+//alert( `You pick ${playerMove}. Computer picked ${computerMove}. ${result} the game.
+//Wins:${scores.wins} Looses:${scores.looses} Ties:${scores.ties}`);
+            
+        }
+
+        function updateScore() {
+            document.querySelector('.js-score').innerHTML = `Wins: ${scores.wins} Looses: ${scores.looses} Ties: ${scores.ties}`; // display the score in the paragraph
+
+        };
+
+        // picking a computer move
+        
+        function pickComputerMove(){
+             // comuter selects random numbers and store in randomNumber and compare the moves
+
+            const randomNumber = Math.random();
+            let computerMove = '';
+            
+            if(randomNumber >= 0 && randomNumber < 1/3){
+            computerMove = 'rock';
+            }else if(randomNumber >= 1/3 && randomNumber < 2/3){
+                computerMove = 'paper'; 
+            }else if(randomNumber >= 2/3 && randomNumber < 1 ){
+                computerMove = 'scissor';
+            } // computerMove re-assigned
+            return computerMove;
+        }
+                
+     
+    </script>
+    
+</body>
+</html>
